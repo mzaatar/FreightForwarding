@@ -1,0 +1,143 @@
+﻿@model FFSolution.Models.ProfitViewModel
+
+@{
+    ViewBag.Title = "Transaction Profitability";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    #wrap {
+        width: 600px;
+        margin: 0 auto;
+    }
+
+    #left_col {
+        float: left;
+        width: 300px;
+    }
+
+    #right_col {
+        float: right;
+        width: 300px;
+    }
+</style>
+
+<br />
+
+<div id="wrap">
+    <div id="left_col">
+        <dl>
+            <dt>
+                Fees In Discharge Port Net
+            </dt>
+            @foreach (var item in Model.Totals.Where(i => i.FinType == "FeesInDischargePortNet"))
+            {
+                <dd style="color: red">
+                    @Html.DisplayFor(modelItem => item.FinTotal)
+                    @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                </dd>
+            }
+
+
+            <dt>
+                Fees In Discharge Port Selling
+            </dt>
+            @foreach (var item in Model.Totals.Where(i => i.FinType == "FeesInDischargePortSelling"))
+            {
+                <dd style="color: green">
+                    @Html.DisplayFor(modelItem => item.FinTotal)
+                    @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                </dd>
+            }
+            <dt />
+
+            <dt>
+                Fees In Origin Net
+            </dt>
+            @foreach (var item in Model.Totals.Where(i => i.FinType == "FeesInOriginNet"))
+            {
+                <dd style="color: red">
+                    @Html.DisplayFor(modelItem => item.FinTotal)
+                    @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                </dd>
+            }
+
+            <dt>
+                In Origin Selling
+            </dt>
+            @foreach (var item in Model.Totals.Where(i => i.FinType == "FeesInOriginSelling"))
+            {
+                <dd style="color: green">
+                    @Html.DisplayFor(modelItem => item.FinTotal)
+                    @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                </dd>
+            }
+
+            <dt />
+            <dt>
+                Charges Net
+            </dt>
+            @foreach (var item in Model.Totals.Where(i => i.FinType == "TranChargesNet"))
+            {
+                <dd style="color: red">
+                    @Html.DisplayFor(modelItem => item.FinTotal)
+                    @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                </dd>
+            }
+
+            <dt>
+                Charges Selling
+            </dt>
+            @foreach (var item in Model.Totals.Where(i => i.FinType == "TranChargesSelling"))
+            {
+                <dd style="color: green">
+                    @Html.DisplayFor(modelItem => item.FinTotal)
+                    @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                </dd>
+            }
+
+
+            @* containers *@
+            <dt>
+                Line Shipping Net
+            </dt>
+            @foreach (var item in Model.Totals.Where(i => i.FinType == "LineShippingNet"))
+            {
+                <dd style ="color: red">
+                    @Html.DisplayFor(modelItem => item.FinTotal)
+                    @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                    </dd>
+            }
+
+            <dt>
+                Line Shipping Selling
+            </dt>
+            @foreach (var item in Model.Totals.Where(i => i.FinType == "LineShippingSelling"))
+            {
+                <dd style="color: green">
+                    @Html.DisplayFor(modelItem => item.FinTotal)
+                    @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                </dd>
+            }
+</dl>
+    </div>
+
+
+    <div id="right_col">
+
+        <strong>Profitability per Currency</strong>
+        <br />
+        @foreach (var item in Model.Profits)
+        {
+            <br />
+            <fieldset>
+                <legend>@Html.DisplayFor(modelItem => item.Currency.CurrencyCode):</legend>
+                <label style="color: green"> Total Earned : @Html.DisplayFor(modelItem => item.TotalEarned)</label>
+                <br />
+                <label style="color: red"> Total Paid : @Html.DisplayFor(modelItem => item.TotalPaid)</label>
+                <br />
+                <strong>Profit : @Html.DisplayFor(modelItem => item.Profit)</strong>
+            </fieldset>
+        }
+    </div>
+</div>

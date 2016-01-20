@@ -1,0 +1,177 @@
+﻿@model FFSolution.Models.TranContainer
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $('#LineShippingChargeCurrencyID').change(function () {
+            $('#DisabledLineShippingChargeTotalCurrency').val($('#LineShippingChargeCurrencyID option:selected').text());
+        });
+
+        $('#LineShippingChargeSellingCurrencyID').change(function () {
+            $('#DisabledLineShippingChargeSellingTotalCurrency').val($('#LineShippingChargeSellingCurrencyID option:selected').text());
+        });
+
+        $('#LineShippingCharge').change(function () {
+            CalcChargeTotals();
+        });
+
+        $('#LineShippingChargeSelling').change(function () {
+            CalcChargeTotals();
+        });
+
+        $('#Count').change(function () {
+            CalcChargeTotals();
+        });
+    });
+
+    var CalcChargeTotals = function () {
+        var count = parseInt($('#Count').val(), 10);
+        var lineCharge = parseFloat($('#LineShippingCharge').val(), 10);
+        var lineChargeSelling = parseFloat($('#LineShippingChargeSelling').val(), 10);
+
+        if (count !== NaN && lineCharge !== NaN) {
+            var t = count * lineCharge;
+            $('#LineShippingChargeTotal').val(t.toString(10));
+            $('#DisabledLineShippingChargeTotal').val(t.toString(10));
+        }
+        else {
+            $('#LineShippingChargeTotal').val('');
+            $('#DisabledLineShippingChargeTotal').val('');
+        }
+
+        if (count !== NaN && lineChargeSelling !== NaN) {
+            var t2 = count * lineChargeSelling;
+            $('#LineShippingChargeSellingTotal').val(t2.toString(10));
+            $('#DisabledLineShippingChargeSellingTotal').val(t2.toString(10));
+        }
+        else {
+            $('#LineShippingChargeSellingTotal').val('');
+            $('#DisabledLineShippingChargeSellingTotal').val('');
+        }
+    }
+</script>
+
+
+<h2>Add new Transaction Container</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+        @*@Html.HiddenFor(model => model.TranID)*@
+
+
+        <div class="form-group" hidden>
+            <label class="control-label col-md-2" for="TranID">TranID</label>
+            <div class="col-md-10">
+                <input class="text-box single-line valid" data-val="true" data-val-number="The field TranID must be a number." data-val-required="The TranID field is required." id="TranID" name="TranID" type="number" value="@ViewBag.ActiveTran.TranID">
+                <span class="field-validation-valid" data-valmsg-for="TranID" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Transaction BL No", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="col-md-2" style="margin:3px;" value="@ViewBag.ActiveTran.BLNo" disabled />
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Booking Date", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="col-md-2" style="margin:3px;" value="@ViewBag.ActiveTran.BookingDate" disabled />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ShippingTypeID, "ShippingTypeID", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ShippingTypeID", String.Empty)
+                @Html.ValidationMessageFor(model => model.ShippingTypeID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Count, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Count)
+                @Html.ValidationMessageFor(model => model.Count)
+            </div>
+        </div>
+        <br />
+        <div class="form-group">
+            @Html.LabelFor(model => model.LineShippingCharge, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LineShippingCharge)
+                @Html.ValidationMessageFor(model => model.LineShippingCharge)
+
+                @Html.DropDownList("LineShippingChargeCurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.LineShippingChargeCurrencyID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LineShippingChargeTotal, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input id="DisabledLineShippingChargeTotal" name="LineShippingChargeTotal" type="number" class="col-xs-2" style="margin:3px;" placeholder="0.00" disabled />
+                <input id="DisabledLineShippingChargeTotalCurrency" type="text" class="col-xs-1" style="margin:3px;" placeholder="$" disabled />
+            </div>
+        </div>
+
+        <div class="form-group" hidden>
+            @Html.LabelFor(model => model.LineShippingChargeTotal, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LineShippingChargeTotal)
+            </div>
+        </div>
+
+        <br />
+        <div class="form-group">
+            @Html.LabelFor(model => model.LineShippingChargeSelling, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LineShippingChargeSelling)
+                @Html.ValidationMessageFor(model => model.LineShippingChargeSelling)
+
+                @Html.DropDownList("LineShippingChargeSellingCurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.LineShippingChargeSellingCurrencyID)
+            </div>
+        </div>
+
+        <div class="form-group" hidden>
+            @Html.LabelFor(model => model.LineShippingChargeSellingTotal, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LineShippingChargeSellingTotal)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LineShippingChargeSellingTotal, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input id="DisabledLineShippingChargeSellingTotal" data-val="true" type="number" class="col-xs-2" style="margin:3px;" placeholder="0.00" disabled />
+                <input id="DisabledLineShippingChargeSellingTotalCurrency" type="text" class="col-xs-1" style="margin:3px;" placeholder="$" disabled />
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-danger" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to Transaction", "Details", "Tran", new { id = ViewBag.ActiveTran.TranID }, new { @class = "btn btn-primary" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

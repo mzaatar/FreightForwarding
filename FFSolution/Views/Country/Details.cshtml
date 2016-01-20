@@ -1,0 +1,139 @@
+﻿@model FFSolution.Models.Country
+
+@{
+    ViewBag.Title = "Country Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    function AddPort() {
+        pname = document.getElementById("NewPortName").value;
+        pcountry = '@Model.CountryID'; //document.getElementById("PortCountry").value;
+
+
+        postData = { pname: pname, pcountry: pcountry };
+        //add token
+        addRequestVerificationToken(postData);
+
+        //add new customer call
+        $.ajax({
+            url: '/Port/CreateByNameOnly', //'@Url.Action("CreateByNameOnly", "Agent")',
+            type: 'POST',
+            dataType: 'json',
+            data: postData,
+            cache: false,
+            success: function (result) {
+                if (result != null) {
+                     location.reload();
+                    
+                    //var htmlForModal = '<h4>A new port has been added to the system named : </h4>' + result.PortName;
+
+                    //$('#remodelDiv').html(htmlForModal);
+                    //window.location.href = '#modal';
+                   // $.unblockUI();
+                    //MyTable.fnDraw();
+                }
+            },
+            error: function (error) {
+
+                var htmlForModal = '<h4>There is an error adding a new agent';
+                $('#remodelDiv').html(htmlForModal);
+                window.location.href = '#modal';
+                return;
+            }
+        });
+    }
+
+</script>
+<h2>Country Details</h2>
+
+<div>
+    <h4>Country</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Updated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Updator)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updator)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CountryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CountryName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CountryID }, new { @class = "btn btn-danger" }) |
+    @Html.ActionLink("Back to list", "Index", null, new { @class = "btn btn-primary" })
+</p>
+
+@* zaatar added *@
+<h2>Ports</h2>
+@*<p>
+    @Html.ActionLink("Create New Port", "Create", "Port", null,null)
+</p>*@
+
+<br />
+<button id="addNewPort" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Add New Port to @Model.CountryName
+</button>
+<div class="collapse" id="collapseExample">
+    <div class="well">
+        <input id="NewPortName" type="text" placeholder="Port Name">
+        <button id="addnewport" class="btn btn-danger" type="button" onclick="AddPort();">Save Port!</button>
+    </div>
+</div>
+<br />
+<br />
+
+<table class="table" id="MyTable">
+    <thead>
+        <tr>
+            <th>
+                Updated
+            </th>
+            <th>
+                Updator
+            </th>
+            <th>
+                PortName
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var port in Model.Port)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => port.Updated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => port.Updator)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => port.PortName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Port", new { id = port.PortID }) |
+                @Html.ActionLink("Details", "Details", "Port", new { id = port.PortID })
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

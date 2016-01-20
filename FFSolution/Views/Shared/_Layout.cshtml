@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FFSystem | @ViewBag.Title</title>
+    <link rel="shortcut icon" href="/images/ship.ico" />
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/bundles/datepicker")*@
+
+    @Styles.Render("~/Content/datatablecss")
+
+    @*zaatar*@
+    <script src="/Scripts/mainjs.js"></script>
+
+    <style>
+        .notificationcount {
+            background: #ff0000;
+            position: absolute;
+            top: 0px;
+            Right: 0px;
+            min-width: 20px;
+            height: 20px;
+            color: #ffffff;
+            border-radius: 100%;
+            padding: 2px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink(" ", "Index", "Home", null, new { @class = "navbar-brand glyphicon glyphicon-home" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    @{if (HttpContext.Current.User.Identity.IsAuthenticated &&
+
+                    (HttpContext.Current.User.IsInRole("administrators")
+                                || HttpContext.Current.User.IsInRole("accounting")
+                               || HttpContext.Current.User.IsInRole("sales")
+                               || HttpContext.Current.User.IsInRole("customerservice")
+                               || HttpContext.Current.User.IsInRole("operation")
+                             || HttpContext.Current.User.IsInRole("customclearance")))
+                    {
+
+                        <li class="dropdown">
+
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Transactions <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                @if (HttpContext.Current.User.IsInRole("administrators")
+                                        || HttpContext.Current.User.IsInRole("operation")
+                                        || HttpContext.Current.User.IsInRole("sales"))
+                                    {
+                                <li>@Html.ActionLink("New Transaction", "Create", "Tran")</li>
+                                    }
+                                <li>@Html.ActionLink("All Transaction", "Index", "Tran")</li>
+                                @if (HttpContext.Current.User.IsInRole("administrators") || HttpContext.Current.User.IsInRole("accounting")) {
+                                <li>@Html.ActionLink("Time Profitability", "SearchForTran", "Profit")</li>
+                                    }
+                            </ul>
+                        </li>
+
+                        if (!HttpContext.Current.User.IsInRole("customclearance"))
+                        {
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Customers <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>@Html.ActionLink("New Customer", "Create", "Customer")</li>
+                                    <li>@Html.ActionLink("All Customers", "Index", "Customer")</li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Set up <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    @if (HttpContext.Current.User.IsInRole("administrators"))
+                                    {
+                                    <li>@Html.ActionLink("Sales men", "Index", "SalesMan")</li>
+                                    <li class="divider"></li>
+                                    }
+
+                                    @if (HttpContext.Current.User.IsInRole("administrators") || HttpContext.Current.User.IsInRole("operation"))
+                                    {
+                                    <li>@Html.ActionLink("Agents", "Index", "Agent")</li>
+                                    <li>@Html.ActionLink("Courier", "Index", "Courier")</li>
+                                    <li>@Html.ActionLink("Measurements", "Index", "Measurement")</li>
+                                    <li>@Html.ActionLink("Shipping Mode", "Index", "ShippingMode")</li>
+                                    <li>@Html.ActionLink("Shipping Term", "Index", "ShippingTerm")</li>
+                                    <li>@Html.ActionLink("Shipping Type", "Index", "ShippingType")</li>
+                                    <li class="divider"></li>
+                                    }
+                                    <li>@Html.ActionLink("Commodity", "Index", "Commodity")</li>
+                                    <li>@Html.ActionLink("Country/Port", "Index", "Country")</li>
+                                    <li>@Html.ActionLink("Currency", "Index", "Currency")</li>
+                                </ul>
+                            </li>
+                        }
+
+                        if (HttpContext.Current.User.IsInRole("sales"))
+                        {
+                            <li class="dropdown">
+
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Sales Man Menu <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>@Html.ActionLink("See Sales Man Profile", "DetailsForSalesMan", "SalesMan")</li>
+                                    <li>@Html.ActionLink("My Transactions", "IndexBySalesManID", "Tran")</li>
+                                </ul>
+                            </li>
+                        }
+
+                        if (HttpContext.Current.User.IsInRole("administrators"))
+                        {
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-lock" aria-hidden="true"></span> Security Setup <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>@Html.ActionLink("Manage Users", "Index", "User")</li>
+                                    <li>@Html.ActionLink("System Administration", "Details", "Config", new { @id = "1" },null)</li>
+                                </ul>
+                            </li>
+                        }
+
+                        <li class="dropdown-toggle" id="NotificationButtonLI">
+                            <a tabindex="-1" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+
+                                <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+                                Notifications
+                                <span class="caret"></span>
+                                <span id="NotificationCounter" class="notificationcount" style="display:none">0</span>
+                            </a>
+
+                            <ul class="dropdown-menu" role="menu" id="TranNotifications"></ul>
+                        </li>
+
+                    }
+                    }
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    @* Remodal *@
+    <div class="remodal" data-remodal-id="modal" id="remodelDiv">
+        @*<h1>Errors</h1>
+            <p>
+                Flat, responsive, lightweight, fast, easy customizable modal window plugin
+                with declarative state notation and hash tracking.
+            </p>
+            <br>
+            <a class="remodal-confirm" href="#">OK</a>*@
+    </div>
+    @* End Remodal *@
+
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,119 @@
+﻿@model FFSolution.Models.TranDetail
+
+@{
+    ViewBag.Title = "Edit Transaction Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    jQuery(document).ready(function () {
+        if (AppGlobal['isOperation'] || AppGlobal['isSales'])
+        {
+            $('#CollectDate').hide();
+            $('#RemainingAmountNotes').hide();
+        }
+
+        if (!AppGlobal['isAccounting'] && !AppGlobal['isAdmin'])
+        {
+            $('#AdditionalField1Label').hide();
+            $('#AdditionalField2Label').hide();
+            $('#PaymentFinished').hide();
+        }
+    });
+
+</script>
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Transaction Details</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.TranID)
+        @Html.HiddenFor(model => model.StatusID)
+
+        <div class="form-group" id="DemurrageFreeDays" >
+            @Html.LabelFor(model => model.DemurrageFreeDays, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DemurrageFreeDays)
+                @Html.ValidationMessageFor(model => model.DemurrageFreeDays)
+            </div>
+        </div>
+
+        <div class="form-group" id="DemurrageOverDays" >
+            @Html.LabelFor(model => model.DemurrageOverDays, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DemurrageOverDays)
+                @Html.ValidationMessageFor(model => model.DemurrageOverDays)
+            </div>
+        </div>
+
+        <div class="form-group" id="DemurrageCost" >
+            @Html.LabelFor(model => model.DemurrageCost, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DemurrageCost)
+                @Html.ValidationMessageFor(model => model.DemurrageCost)
+
+                @Html.DropDownList("DemurrageCostCurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.DemurrageCostCurrencyID)
+            </div>
+        </div>
+
+        <div class="form-group" id="CollectDate" >
+            @Html.LabelFor(model => model.CollectDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CollectDate)
+                @Html.ValidationMessageFor(model => model.CollectDate)
+            </div>
+        </div>
+
+        <div class="form-group" id="PaymentFinished" >
+            @Html.LabelFor(model => model.PaymentFinished, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PaymentFinished)
+                @Html.ValidationMessageFor(model => model.PaymentFinished)
+            </div>
+        </div>
+
+        <div class="form-group" id="RemainingAmountNotes" >
+            @Html.LabelFor(model => model.RemainingAmountNotes, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.RemainingAmountNotes)
+                @Html.ValidationMessageFor(model => model.RemainingAmountNotes)
+            </div>
+        </div>
+
+    <div class="form-group" id="AdditionalField1Label" >
+        @Html.LabelFor(model => model.AdditionalField1Label, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.AdditionalField1Label)
+            @Html.ValidationMessageFor(model => model.AdditionalField1Label)
+        </div>
+    </div>
+    <div class="form-group" id="AdditionalField2Label" >
+        @Html.LabelFor(model => model.AdditionalField2Label, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.AdditionalField2Label)
+            @Html.ValidationMessageFor(model => model.AdditionalField2Label)
+        </div>
+    </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-danger" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to Transaction", "Details", "Tran", new { id = Model.TranID }, null)
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

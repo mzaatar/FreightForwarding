@@ -1,0 +1,208 @@
+﻿@model FFSolution.Models.ProfitForTranListViewModel
+
+@{
+    ViewBag.Title = "Time Profitability";
+}
+
+<style type="text/css">
+    #wrap {
+        width: 600px;
+        margin: 0 auto;
+    }
+
+    #left_col {
+        float: left;
+        width: 300px;
+    }
+
+    #right_col {
+        float: right;
+        width: 300px;
+    }
+</style>
+
+<script>
+
+    $(document).ready(function () {
+        $('#ProfitTransTable').DataTable({
+            paging: false
+        });
+    });
+</script>
+
+<br />
+<hr />
+<br />
+
+
+<button id="printMe" class="btn btn-danger pull-right" onclick="window.print();">Print</button>
+
+<h4>Transaction Summary</h4>
+<table id="ProfitTransTable" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                Tran Ref Number @*@Html.DisplayNameFor(model => model.TranRefNumber)*@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trans.FirstOrDefault().BookingDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trans.FirstOrDefault().BLNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trans.FirstOrDefault().POL)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trans.FirstOrDefault().POD)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trans.FirstOrDefault().ETD)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trans.FirstOrDefault().ETA)
+            </th>
+            <th>
+                Consignee Name 
+            </th>
+            <th>
+                Sales Man Name
+            </th>
+            <th>
+                Status
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Trans)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TranRefNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookingDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BLNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Port1.PortName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Port.PortName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ETD)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ETA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SalesMan.SalesManName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TranDetail.TranStatus.StatusName)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+
+<h4>Profit Summary</h4>
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default" id="panel1">
+        <div class="panel-heading">
+            <h4 class="panel-title" id="DatesLabel" style="color:red">
+               Total Time Profitability for these list of transctions
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <td>
+                                <strong>Currency Code</strong>
+                            </td>
+                            <td>
+                                <strong style="color:green">Total Earned</strong>
+                            </td>
+
+                            <td>
+                                <strong style="color:red">Total Paid</strong>
+                            </td>
+
+                            <td>
+                                <strong>Profit</strong>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var p in Model.ProfitGrouping)
+                            {
+                                <tr>
+                                    <td>
+                                        @p.Currency.CurrencyCode
+                                    </td>
+                                    <td style="color:green">
+                                        @p.TotalEarned
+                                    </td>
+                                    <td style="color:red">
+                                        @p.TotalPaid
+                                    </td>
+                                    @{if (@p.Profit >= 0)
+                                    {
+                                        <td style="color:green">
+                                            @p.Profit
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td style="color:red">
+                                            @p.Profit
+                                        </td>
+                                    }
+                                    }
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+
+<h4>Profit details for each transaction</h4>
+<div class="panel-group" id="accordion">
+    @{foreach (var t in Model.ProfitsVM)
+    {
+        var x = "panel"+t.BLNo;
+        <div class="panel panel-default" id=x>
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <strong>Profitability for Tran with BLNo : @t.BLNo </strong>
+                </h4>
+
+            </div>
+            <div class="panel-collapse collapse in">
+                <div class="panel-body">
+                    @Html.Partial("~/Views/Profit/TranProfitDetails.cshtml", t)
+                </div>
+            </div>
+        </div>
+        <br />
+    }
+    }
+</div>

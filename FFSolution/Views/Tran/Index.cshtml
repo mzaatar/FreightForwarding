@@ -1,0 +1,97 @@
+﻿@model IEnumerable<FFSolution.Models.Tran>
+
+@{
+    ViewBag.Title = "Transaction Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Transaction List</h2>
+
+@if (User.IsInRole("administrators") || User.IsInRole("accounting")) { 
+<button id="btnPrint" class="btn btn-danger pull-right">Print All</button>
+}
+<br />
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+<table id="TransTable" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                Ref Number@*@Html.DisplayNameFor(model => model.TranRefNumber)*@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookingDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BLNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.POL)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.POD)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ETD)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ETA)
+            </th>
+            <th>
+                Consignee@*@Html.DisplayNameFor(model => model.Customer.CustomerName)*@
+            </th>
+            <th>
+                Sales Man@*@Html.DisplayNameFor(model => model.Customer.CustomerName)*@
+            </th>
+            <th>
+                Status 
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TranRefNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookingDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BLNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Port1.PortName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Port.PortName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ETD)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ETA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SalesMan.SalesManName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TranDetail.TranStatus.StatusName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.TranID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.TranID })
+                    @*|
+                        @Html.ActionLink("Delete", "Delete", new { id = item.TranID })*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

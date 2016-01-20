@@ -1,0 +1,243 @@
+﻿@model FFSolution.Models.Tran
+
+@{
+    ViewBag.Title = "Create Transaction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript" src="~/Scripts/tran.js">
+</script>
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Tran</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ReservationDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ReservationDate)
+                @Html.ValidationMessageFor(model => model.ReservationDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookingDate, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BookingDate)
+                @Html.ValidationMessageFor(model => model.BookingDate)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BLNo, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BLNo)
+                @Html.ValidationMessageFor(model => model.BLNo)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ETA, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ETA)
+                @Html.ValidationMessageFor(model => model.ETA)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ETD, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ETD)
+                @Html.ValidationMessageFor(model => model.ETD)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.POL, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("POL", String.Empty)
+                @Html.ValidationMessageFor(model => model.POL)
+
+                <button id="addNewPort" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapsePort" aria-expanded="false" aria-controls="collapsePort">
+                    Want to Add New Port ? (POL or POD)
+                </button>
+                <div class="collapse" id="collapsePort">
+                    <div class="well">
+                        <input id="NewPortName" type="text" placeholder="New Port Name">
+                        @Html.DropDownList("PortCountry", (SelectList)ViewBag.countryList, "Select Port Country")
+                        <button id="addnewcustomer" class="btn btn-success" type="button" onclick="AddPort();">Save Port!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.POD, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("POD", String.Empty)
+                @Html.ValidationMessageFor(model => model.POD)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CourierID, "Courier Name", new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DropDownList("CourierID", String.Empty)
+                @Html.ValidationMessageFor(model => model.CourierID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ShipperID, "Shipper Name", new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DropDownList("ShipperID", String.Empty)
+                @Html.ValidationMessageFor(model => model.ShipperID)
+            </div>
+        </div>
+
+        <div class="form-group" style=" ">
+            @Html.LabelFor(model => model.ConsigneeID, "Consignee Name", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ConsigneeID", String.Empty)
+                @Html.ValidationMessageFor(model => model.ConsigneeID)
+
+                <button id="addNewCustomer" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Want to Add New Customer ? (Consignee or Shipper)
+                </button>
+                <div class="collapse" id="collapseExample">
+                    <div class="well">
+                        <input id="NewCustomerName" type="text" placeholder="New Customer Name">
+                        <button id="addnewcustomer" class="btn btn-success" type="button" onclick="AddCustomer();">Save Customer!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PhoneNumber, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PhoneNumber)
+                @Html.ValidationMessageFor(model => model.PhoneNumber)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AgentID, "Agent Name", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("AgentID", String.Empty)
+                @Html.ValidationMessageFor(model => model.AgentID)
+
+                <button id="addNewAgent" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#agentpanel" aria-expanded="false" aria-controls="agentpanel">
+                    Want to Add New Agent??
+                </button>
+                <div class="collapse" id="agentpanel">
+                    <div class="well">
+                        <input id="NewAgentName" type="text" placeholder="New Agent Name" />
+                        @Html.DropDownList("AgentCountry", (SelectList)ViewBag.countryList, "Select Agent Country")
+                        <button id="addnewagent" class="btn btn-success" type="button" onclick="AddAgent();">Save Agent!</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SalesManID, "Sales Man Name", new { @class = "control-label col-md-2" })
+            @if (User.IsInRole("sales") && ViewBag.CurrentSalesManName != "none")
+            {
+                <div class="col-md-10">
+                    @ViewBag.CurrentSalesManName
+                </div>
+
+            }
+            else
+            {
+                <div class="col-md-10">
+                    @Html.DropDownList("SalesManID", String.Empty)
+                    @Html.ValidationMessageFor(model => model.SalesManID)
+                </div>
+            }
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CommodityID, "Commodity Name", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CommodityID", String.Empty)
+                @Html.ValidationMessageFor(model => model.CommodityID)
+
+
+                <button id="addNewCommodity" class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseCommodity" aria-expanded="false" aria-controls="collapseCommodity">
+                    Want to Add New Commodity ?
+                </button>
+                <div class="collapse" id="collapseCommodity">
+                    <div class="well">
+                        <input id="NewCommodityName" type="text" placeholder="New Commodity Name">
+                        <button id="addnewcommodity" class="btn btn-success" type="button" onclick="AddCommodity();">Save Commodity!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ShippingTermID, "Shipping Term Name", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ShippingTermID", String.Empty)
+                @Html.ValidationMessageFor(model => model.ShippingTermID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OriginCountryID, "Origin Country Name", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("OriginCountryID", String.Empty)
+                @Html.ValidationMessageFor(model => model.OriginCountryID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TT, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TT)
+                @Html.ValidationMessageFor(model => model.TT)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FinalDistination, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FinalDistination)
+                @Html.ValidationMessageFor(model => model.FinalDistination)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Notes, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Notes)
+                @Html.ValidationMessageFor(model => model.Notes)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-danger" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to list", "Index", null, new { @class = "btn btn-primary" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

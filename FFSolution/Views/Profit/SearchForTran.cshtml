@@ -1,0 +1,139 @@
+﻿@model FFSolution.Models.ProfitForTranListViewModel
+
+@{
+    ViewBag.Title = "Search for Tran By Date";
+}
+<style>
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba( 255, 255, 255, .8 ) url("/Images/spinner.gif") 50% 50% no-repeat;
+    }
+
+    /* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+    body.loading {
+        overflow: hidden;
+    }
+
+        /* Anytime the body has the loading class, our
+   modal element will be visible */
+        body.loading .modal {
+            display: block;
+        }
+</style>
+
+<script type="text/javascript">
+
+
+    function isFormValid() {
+        if($('#FromDate').val() === '' || $('#FromDate').val() === undefined)
+        {
+            return false;
+        }
+            if($('#ToDate').val() === '' || $('#ToDate').val() === undefined)
+        {
+            return false;
+        }
+        return true;
+    };
+
+    function getProfit() {
+
+        $('#ProfitDetails').html();
+        $('#ProfitDetails').hide();
+
+
+        if (isFormValid() == true) {
+            var fromDate = $('#FromDate').val();
+            var toDate = $('#ToDate').val();
+            var returnvalue = 0;
+
+            $.ajax({
+                url: '/Profit/GetTranProfit',
+                type: 'GET',
+                dataType: 'html',
+                cache: false,
+                data: { fromDate: fromDate, toDate: toDate }
+                , success: function (response) {
+                    if (response != null || response != 'undefined') {
+                        $('#ProfitDetails').html(response); 
+                        $('#ProfitDetails').show();
+                    }
+                    $.unblockUI();
+                    return;
+                }
+                ,error: function (xhr, ajaxOptions, thrownError) {
+                    var htmlForModal = '';
+                    htmlForModal += '<h4>Error getting the Profitability for this period</h4>'
+                    //call the modal
+                    htmlForModal += '<a class="remodal-confirm" href="#">Back</a>';
+                    $('#remodelDiv').html(htmlForModal);
+                    window.location.href = '#modal';
+                }
+            });
+            $.unblockUI();
+            return;
+        }
+    }
+
+    $(document).ready(function () {
+        $('input[type=datetime]').datepicker({
+            dateformat: "yyyy/mm/dd"
+        });
+    });
+</script>
+    <h2>Search for set of transaction to show your profit for them</h2>
+    <h4>
+        Pick from date and to date to search for all transactions in this period...
+    </h4>
+    
+    <hr />
+
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-3" for="FromDate">From Date</label>
+            
+            <div class="col-md-10">
+                <input class="text-box single-line valid" data-val="true" data-val-required="From Date field is required." id="FromDate" name="FromDate" type="date">
+                <span class="field-validation-valid" data-valmsg-for="FromDate" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+
+       
+
+        <div class="form-group">
+            <label class="control-label col-md-3" for="ToDate">To Date</label>
+            <div class="col-md-10">
+                <input class="text-box single-line valid" data-val="true" data-val-required="To Date field is required." id="ToDate" name="ToDate" type="date">
+                <span class="field-validation-valid" data-valmsg-for="ToDate" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+
+    <button id="btnProfit"
+        onclick="getProfit()"
+            class=" btn btn-danger right">
+    Time Profitability
+</button>
+
+    <div id="ProfitDetails" style="display:none">
+    </div>
+
+
+    @*@Html.Partial("~/Views/Profit/TranProfitDetailsList.cshtml")*@
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

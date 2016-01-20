@@ -1,0 +1,71 @@
+﻿@model IEnumerable<FFSolution.Models.Country>
+
+@{
+    ViewBag.Title = "Country List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+<table id="MyTable" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Updated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Updator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CountryName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Updated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Updator)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CountryName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.CountryID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.CountryID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@*<h2>Ports</h2>
+
+<table id="MyTable2" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+               Updated 
+            </th>
+            <th>
+                Updator 
+            </th>
+            <th>
+                Port Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        
+    </tbody>
+</table>*@

@@ -1,0 +1,122 @@
+﻿@model FFSolution.Models.FeesInDischargePortSelling
+
+<br />
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomsPersonName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomsPersonName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.THC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.THC)
+            @Html.DisplayFor(model => model.Currency7.CurrencyCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Truck)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Truck)
+            @Html.DisplayFor(model => model.Currency8.CurrencyCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Pacing)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pacing)
+            @Html.DisplayFor(model => model.Currency5.CurrencyCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.License)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.License)
+            @Html.DisplayFor(model => model.Currency2.CurrencyCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Recept)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Recept)
+            @Html.DisplayFor(model => model.Currency6.CurrencyCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Customs)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customs)
+            @Html.DisplayFor(model => model.Currency1.CurrencyCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Clearance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Clearance)
+            @Html.DisplayFor(model => model.Currency.CurrencyCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OtherCustomsFees)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OtherCustomsFees)
+            @Html.DisplayFor(model => model.Currency4.CurrencyCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Others)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Others)
+            @Html.DisplayFor(model => model.Currency3.CurrencyCode)
+        </dd>
+
+        @* additional fields *@
+        <dt>
+            @Html.DisplayFor(model => model.Tran.TranDetail.AdditionalField1Label)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AdditionalField1)
+            @Html.DisplayFor(model => model.Currency11.CurrencyCode)
+        </dd>
+        <dt>
+            @Html.DisplayFor(model => model.Tran.TranDetail.AdditionalField2Label)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AdditionalField2)
+            @Html.DisplayFor(model => model.Currency21.CurrencyCode)
+        </dd>
+    </dl>
+</div>
+@if (Model.Tran.TranDetail.StatusID != 4 || User.IsInRole("administrators"))
+{
+    if (!User.IsInRole("operation"))
+    {
+        <p>
+            <a href="/FeesInDischargePortSelling/Edit/@Model.TranID" class="btn btn-danger">Edit</a>
+        </p>
+    }
+}

@@ -1,0 +1,54 @@
+﻿@model IEnumerable<FFSolution.Models.Port>
+
+@{
+    ViewBag.Title = "Port List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+<table id="MyTable" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Updated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Updator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PortName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country.CountryName)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Updated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Updator)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PortName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country.CountryName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.PortID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.PortID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,256 @@
+﻿@model FFSolution.Models.FeesInOriginNet
+
+@{
+    ViewBag.Title = "Edit Fees In Origin Net";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    jQuery(document).ready(function () {
+
+        // event handler
+
+        function removeVal() {
+            var items = $(".form-horizontal *");//startElem.getElementsByTagName("*");
+            items.each(function (index, element) {
+                var isDisabled = $(element).is(':disabled');
+                if (isDisabled) {
+                    $(element).val("");
+                }
+                else {
+                    $(element).show();
+                }
+            });
+        }
+
+        function IsChinaCheckEvent() {
+            var checked = $(this).is(':checked');
+            if (checked) {
+                console.warn(checked);
+                $('#THC').attr("disabled", false);
+                $('#THCCurrencyID').attr("disabled", false);
+                $('#Truck').attr("disabled", false);
+                $('#TruckCurrencyID').attr("disabled", false);
+                $('#CIQ').attr("disabled", false);
+                $('#CIQCurrencyID').attr("disabled", false);
+                $('#CO').attr("disabled", false);
+                $('#COCurrencyID').attr("disabled", false);
+                $('#SealFees').attr("disabled", false);
+                $('#SealFeesCurrencyID').attr("disabled", false);
+                $('#Courier').attr("disabled", false);
+                $('#CourierCurrencyID').attr("disabled", false);
+                $('#Insurance').attr("disabled", false);
+                $('#InsuranceCurrencyID').attr("disabled", false);
+                $('#CustomsClearance').attr("disabled", false);
+                $('#CustomsClearanceCurrencyID').attr("disabled", false);
+                $('#Others').attr("disabled", false);
+                $('#OthersCurrencyID').attr("disabled", false);
+
+
+                $('#EuropeAllIn').attr("disabled", true);
+                $('#EuropeAllInCurrencyID').attr("disabled", true);
+            } else {
+                console.warn(checked);
+                $('#THC').attr("disabled", true);
+                $('#THCCurrencyID').attr("disabled", true);
+                $('#Truck').attr("disabled", true);
+                $('#TruckCurrencyID').attr("disabled", true);
+                $('#CIQ').attr("disabled", true);
+                $('#CIQCurrencyID').attr("disabled", true);
+                $('#CO').attr("disabled", true);
+                $('#COCurrencyID').attr("disabled", true);
+                $('#SealFees').attr("disabled", true);
+                $('#SealFeesCurrencyID').attr("disabled", true);
+                $('#Courier').attr("disabled", true);
+                $('#CourierCurrencyID').attr("disabled", true);
+                $('#Insurance').attr("disabled", true);
+                $('#InsuranceCurrencyID').attr("disabled", true);
+                $('#CustomsClearance').attr("disabled", true);
+                $('#CustomsClearanceCurrencyID').attr("disabled", true);
+                $('#Others').attr("disabled", true);
+                $('#OthersCurrencyID').attr("disabled", true);
+
+                $('#EuropeAllIn').attr("disabled", false);
+                $('#EuropeAllInCurrencyID').attr("disabled", false);
+            }
+
+            removeVal();
+        }
+       
+        $("#IsChina").change(IsChinaCheckEvent);
+        // fire event in case on loading page
+        $("#IsChina").trigger("change");       
+    });
+
+</script>
+
+            <h2>Edit</h2>
+
+
+            @using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+                    <h4>Fees In Origin Net</h4>
+                    <hr />
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.TranID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EuropeAllIn, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EuropeAllIn)
+                @Html.ValidationMessageFor(model => model.EuropeAllIn)
+
+                @Html.DropDownList("EuropeAllInCurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.EuropeAllInCurrencyID)
+            </div>
+        </div>
+
+                    <div class="form-group">
+            @Html.LabelFor(model => model.IsChina, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+            @Html.CheckBoxFor(model => model.IsChina)
+            @Html.ValidationMessageFor(model => model.IsChina)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+            @Html.LabelFor(model => model.THC, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+            @Html.EditorFor(model => model.THC)
+            @Html.ValidationMessageFor(model => model.THC)
+
+            @Html.DropDownList("THCCurrencyID", String.Empty)
+            @Html.ValidationMessageFor(model => model.THCCurrencyID)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+            @Html.LabelFor(model => model.Truck, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+            @Html.EditorFor(model => model.Truck)
+            @Html.ValidationMessageFor(model => model.Truck)
+
+            @Html.DropDownList("TruckCurrencyID", String.Empty)
+            @Html.ValidationMessageFor(model => model.TruckCurrencyID)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+            @Html.LabelFor(model => model.CIQ, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+            @Html.EditorFor(model => model.CIQ)
+            @Html.ValidationMessageFor(model => model.CIQ)
+
+            @Html.DropDownList("CIQCurrencyID", String.Empty)
+            @Html.ValidationMessageFor(model => model.CIQCurrencyID)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+            @Html.LabelFor(model => model.CO, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+            @Html.EditorFor(model => model.CO)
+            @Html.ValidationMessageFor(model => model.CO)
+
+            @Html.DropDownList("COCurrencyID", String.Empty)
+            @Html.ValidationMessageFor(model => model.COCurrencyID)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+            @Html.LabelFor(model => model.SealFees, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+            @Html.EditorFor(model => model.SealFees)
+            @Html.ValidationMessageFor(model => model.SealFees)
+
+            @Html.DropDownList("SealFeesCurrencyID", String.Empty)
+            @Html.ValidationMessageFor(model => model.SealFeesCurrencyID)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+            @Html.LabelFor(model => model.Courier, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+            @Html.EditorFor(model => model.Courier)
+            @Html.ValidationMessageFor(model => model.Courier)
+
+            @Html.DropDownList("CourierCurrencyID", String.Empty)
+            @Html.ValidationMessageFor(model => model.CourierCurrencyID)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+            @Html.LabelFor(model => model.Insurance, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+            @Html.EditorFor(model => model.Insurance)
+            @Html.ValidationMessageFor(model => model.Insurance)
+
+            @Html.DropDownList("InsuranceCurrencyID", String.Empty)
+            @Html.ValidationMessageFor(model => model.InsuranceCurrencyID)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+            @Html.LabelFor(model => model.CustomsClearance, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+            @Html.EditorFor(model => model.CustomsClearance)
+            @Html.ValidationMessageFor(model => model.CustomsClearance)
+
+            @Html.DropDownList("CustomsClearanceCurrencyID", String.Empty)
+            @Html.ValidationMessageFor(model => model.CustomsClearanceCurrencyID)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+            @Html.LabelFor(model => model.Others, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+            @Html.EditorFor(model => model.Others)
+            @Html.ValidationMessageFor(model => model.Others)
+
+            @Html.DropDownList("OthersCurrencyID", String.Empty)
+            @Html.ValidationMessageFor(model => model.OthersCurrencyID)
+                        </div>
+                    </div>
+
+                    
+
+        @* additional Fields *@
+        <div class="form-group">
+            <label class="control-label col-md-2" for="AdditionalField1">@Model.Tran.TranDetail.AdditionalField1Label</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AdditionalField1)
+                @Html.ValidationMessageFor(model => model.AdditionalField1)
+
+                @Html.DropDownList("AdditionalField1CurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.AdditionalField1CurrencyID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="AdditionalField2">@Model.Tran.TranDetail.AdditionalField2Label</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AdditionalField2)
+                @Html.ValidationMessageFor(model => model.AdditionalField2)
+
+                @Html.DropDownList("AdditionalField2CurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.AdditionalField2CurrencyID)
+            </div>
+        </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Save" class="btn btn-danger" />
+                        </div>
+                    </div>
+                </div>
+}
+
+<div>
+@Html.ActionLink("Back to Transaction", "Details", "Tran", new { id = Model.TranID }, null)
+</div>
+
+
+            @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+            }

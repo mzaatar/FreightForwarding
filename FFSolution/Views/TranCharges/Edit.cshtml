@@ -1,0 +1,111 @@
+﻿@model FFSolution.Models.TranCharges
+
+@{
+    ViewBag.Title = "Edit Transaction Charges";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+
+        $("#LineShippingCharge").trigger("focusout");
+        $("#LineShippingChargeSelling").trigger("focusout");
+
+        if (AppGlobal['isAdmin'] || AppGlobal['isAccounting']) {
+            $('#divTohide').show();
+        }
+
+        if (AppGlobal['isOperation'] || AppGlobal['isSales'] || AppGlobal['isAccounting'] || AppGlobal['isAdmin']) {
+            $('#divTohide2').show();
+        }
+
+    });
+</script>
+
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Transaction Charges</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.TranID)
+
+        <div id="divTohide" hidden>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CommissionPercentage, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CommissionPercentage)
+                    @Html.ValidationMessageFor(model => model.CommissionPercentage)
+
+                    @Html.DropDownList("CommissionPercentageCurrencyID", String.Empty)
+                    @Html.ValidationMessageFor(model => model.CommissionPercentageCurrencyID)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PaidCommission, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PaidCommission)
+                    @Html.ValidationMessageFor(model => model.PaidCommission)
+
+                    @Html.DropDownList("PaidCommissionCurrencyID", String.Empty)
+                    @Html.ValidationMessageFor(model => model.PaidCommissionCurrencyID)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BankPercentage, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.BankPercentage)
+                    @Html.ValidationMessageFor(model => model.BankPercentage)
+
+                    @Html.DropDownList("BankPercentageCurrencyID", String.Empty)
+                    @Html.ValidationMessageFor(model => model.BankPercentageCurrencyID)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BankTransferFees, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.BankTransferFees)
+                    @Html.ValidationMessageFor(model => model.BankTransferFees)
+
+                    @Html.DropDownList("BankTransferFeesCurrencyID", String.Empty)
+                    @Html.ValidationMessageFor(model => model.BankTransferFeesCurrencyID)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.OtherFees, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.OtherFees)
+                    @Html.ValidationMessageFor(model => model.OtherFees)
+
+                    @Html.DropDownList("OtherFeesCurrencyID", String.Empty)
+                    @Html.ValidationMessageFor(model => model.OtherFeesCurrencyID)
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-danger" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to Transaction", "Details", "Tran", new { id = Model.TranID }, null)
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

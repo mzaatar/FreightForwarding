@@ -1,0 +1,59 @@
+﻿@model FFSolution.Models.ShippingType
+
+@{
+    ViewBag.Title = "Shipping Type Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Shipping Type</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Updated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Updator)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updator)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShippingTypeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShippingTypeName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShippingMode.ShippingModeName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShippingMode.ShippingModeName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ShippingTypeID }, new { @class = "btn btn-danger" }) |
+    @Html.ActionLink("Back to list", "Index", null, new { @class = "btn btn-primary" })
+</p>

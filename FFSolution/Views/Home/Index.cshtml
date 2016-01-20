@@ -1,0 +1,144 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Freight Forwarding System</h1>
+  
+</div>
+
+<script>
+    function transearch() {
+        blnumber = document.getElementById("BLNumNumber").value;
+        postData = { blnumber: blnumber};
+        $.ajax({
+            url: '/Tran/DetailsByBLNumber',
+            type: 'GET',
+            dataType: 'json',
+            data: postData,
+            // we set cache: false because GET requests are often cached by browsers
+            // IE is particularly aggressive in that respect
+            cache: false,
+            success: function (result) {
+                window.location.href = '/Tran/Details/' + result;
+            },
+            error: function(error) {
+
+                var htmlForModal = 'Transaction with B/N Number : " + blnumber + " is not found, try another number !!!';
+
+                $('#remodelDiv').html(htmlForModal);
+                window.location.href = '#modal';
+            }
+        });
+    }
+
+    function customersearch() {
+        cname = document.getElementById("customerName").value;
+        postData = { cname: cname };
+        $.ajax({
+            url: '/Customer/DetailsByCustomerName',
+            type: 'GET',
+            dataType: 'json',
+            data: postData,
+            // we set cache: false because GET requests are often cached by browsers
+            // IE is particularly aggressive in that respect
+            cache: false,
+            success: function (result) {
+                window.location.href = '/Customer/Details/' + result;
+            },
+            error: function (error) {
+                var htmlForModal = 'Customer with name like : ' + cname + ' is not found, try another name !!!';
+
+                $('#remodelDiv').html(htmlForModal);
+                window.location.href = '#modal';
+            }
+        });
+    }
+</script>
+
+@{if (User.Identity.IsAuthenticated)
+    {
+    <div class="with-background">
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Transactions</h2>
+             <p>
+                Search for a transaction
+            </p>
+            <div class="col-lg-8">
+                <div class="input-group">
+                    <input id="BLNumNumber"  type="text" class="form-control" placeholder="B/L Number Number...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" onclick="transearch();">Go!</button>
+                    </span>
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        </div>
+        <div class="col-md-4">
+            <h2>Customers</h2>
+            <p>
+                Search for a customer
+            </p>
+            <div class="col-lg-8">
+                <div class="input-group">
+                    <input id="customerName" type="text" class="form-control" placeholder="Customer Name...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" onclick="customersearch();">Go!</button>
+                    </span>
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        </div>
+
+        @if (HttpContext.Current.User.IsInRole("sales"))
+        {
+        <div class="col-md-4">
+            <h2>Sales Man Area</h2>
+                @{
+            if (ViewBag.SalesID > 1)
+            {
+                <p>
+                    Sales Man ID : @ViewBag.SalesID
+                </p>
+            }
+            else
+            {
+                <p>
+                    You are a sales man but you cannot access your sales man area.
+                </p>
+                    <p>
+                        Please contact system administrator to assign you a sales man ID
+                    </p>
+            }
+                } 
+        </div>
+        }
+
+    </div>
+</div>
+    }
+    else if (HttpContext.Current.User.IsInRole("sales"))
+    {
+        <div class="row">
+        <div class="col-md-4">
+            <h2>Sales Man Area</h2>
+            @{
+        if (ViewBag.SalesID > 1)
+        {
+             <p>
+                Sales Man ID : @ViewBag.SalesID
+            </p>
+        }
+        else
+        {
+             <p>
+                You are a sales man but you cannot access your sales man area.
+            </p>
+                 <p>
+                Please contact system administrator to assign you a sales man ID
+            </p>
+        }
+            } 
+        </div>
+    </div>
+    }
+}

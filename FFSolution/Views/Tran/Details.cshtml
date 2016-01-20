@@ -1,0 +1,474 @@
+﻿@model FFSolution.Models.Tran
+
+@{
+    ViewBag.Title = " Transaction Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+
+
+    $(document).ready(function () {
+
+        AppGlobal['activeTranID'] = '@Model.TranID';
+        AppGlobal["activeTranStatusID"] = '@Model.TranDetail.StatusID';
+
+    });
+
+
+    function UpdateTran(tranID, statusFrom, statusTo) {
+        $.blockUI();
+
+        $.ajax({
+            url: '/Tran/FFWFMoveToNextStep',
+            type: 'GET',
+            dataType: 'json',
+            cache: false,
+            data: { tranID: tranID, statusFrom: statusFrom, statusTo: statusTo },
+            success: function (response) {
+                if (response.length > 0) {
+                    var htmlForModal = '';
+                    htmlForModal += '<h3>Transaction can not be finalized because of the following errors : </h3>'
+                    $.each(response, function (index) {
+                        htmlForModal += ' <p> * ' + response[index] + '</p>';
+                    });
+                    $.unblockUI();
+
+                    //call the modal
+                    htmlForModal += '<a class="remodal-confirm" href="#">Back</a>';
+                    $('#remodelDiv').html(htmlForModal);
+                    window.location.href = '#modal';
+                    return;
+                }
+                console.warn('transaction went from status : ' + statusFrom + ' To status : ' + statusTo);
+                //refresh the page
+                window.location.href = '/Tran/Details/' + tranID;
+            },
+            error: function (errors) {
+                console.warn('transaction CANNOT GO from status : ' + statusFrom + ' To status : ' + statusTo);
+                $.each(errors, function (index) {
+                    console.warn('error : ' + errors[index]);
+                });
+            }
+        });
+        $.unblockUI();
+        return;
+    }
+
+
+    function EnableSendToOperation() {
+        //resetScreen();
+        $('#SendToOperations').prop("disabled", false);
+
+    };
+
+    function EnableSendToAccounting() {
+        $('#SendToAccountant').prop("disabled", false);
+    };
+
+    function EnableFinalize() {
+        $('#FinalizeTransaction').prop("disabled", false);
+    };
+</script>
+
+<h2>Details</h2>
+
+<div>
+    <h4>Transaction</h4>
+    @{
+        if (User.IsInRole("accounting") || User.IsInRole("administrators"))
+        {
+            if (Model.TranDetail.PaymentFinished == true)
+            {
+                if (Model.TranDetail.StatusID == 4)
+                {
+                    <div class="well panel-heading col-lg-12 " style="text-align: center; color: white; background-color: green; ">
+                        This transaction payment is done.
+                        <br />
+                        Payemnt notes is : @Model.TranDetail.RemainingAmountNotes
+                    </div>
+                }
+                else //if (Model.TranDetail.StatusID == 4)
+                {
+                    <div class="well panel-heading col-lg-12 " style="text-align: center; color: white; background-color: orange; ">
+                        This transaction payment is set to Yes but the transaction status is not finalized yet.
+                        <br />
+                        Please make sure that an accountant or the administrator modify the transaction to finalize it.
+                        <br />
+                        Payemnt notes is : @Model.TranDetail.RemainingAmountNotes
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="well panel-heading col-lg-12 " style="text-align: center; color: white; background-color: red; ">
+                    This transaction is not fully paid.
+                    <br />
+                    Payemnt notes is : @Model.TranDetail.RemainingAmountNotes
+                </div>
+            }
+        }
+    }
+    <button class="btn btn-sm btn-warning pull-right" style="margin: 5px; border-radius: 40px;" disabled> Finished </button>
+
+    <button type="button"
+            id="FinalizeTransaction"
+            class="btn btn-default btn-success pull-right"
+            style="margin: 5px; background-color: #5cb85c !important;"
+            disabled
+            onclick="UpdateTran('@Model.TranID', '@Model.TranDetail.StatusID', 4);">
+        Finalize Transaction >>
+    </button>
+
+
+    <button type="button"
+            id="SendToAccountant"
+            class="btn btn-default btn-success pull-right"
+            style="margin: 5px; background-color: #5cb85c !important;"
+            disabled
+            onclick="UpdateTran('@Model.TranID', '@Model.TranDetail.StatusID', 3);">
+        Send To Accountant >>
+    </button>
+
+    <button id="SendToOperations"
+            type="button"
+            class="btn btn-default btn-success pull-right"
+            style="margin: 5px; background-color: #5cb85c !important;"
+            disabled
+            onclick="UpdateTran('@Model.TranID', '@Model.TranDetail.StatusID', 2);">
+        Send To Operations >>
+    </button>
+
+    <button class="btn btn-sm btn-warning pull-right" style="margin: 5px; border-radius: 40px;" disabled> Begin </button>
+
+    @* Handling Workflow *@
+    @if (Model.TranDetail.StatusID == 1 && (User.IsInRole("sales") || User.IsInRole("administrators")))
+    {
+        <script type="text/javascript">EnableSendToOperation();</script>
+    }
+    @if (Model.TranDetail.StatusID == 2 && (User.IsInRole("operation") || User.IsInRole("administrators")))
+    {
+        <script type="text/javascript">EnableSendToAccounting();</script>
+    }
+    @if (Model.TranDetail.StatusID == 3 && (User.IsInRole("accounting") || User.IsInRole("administrators")))
+    {
+        <script type="text/javascript">EnableFinalize();</script>
+    }
+
+
+    <br />
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Updated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Updator)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updator)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TranRefNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TranRefNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReservationDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReservationDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BookingDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BookingDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BLNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BLNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.POL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Port1.PortName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.POD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Port.PortName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ETD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ETD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ETA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ETA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Courier.CourierName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Courier.CourierName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FinalDistination)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FinalDistination)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Agent.AgentName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Agent.AgentName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Commodity.CommodityName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Commodity.CommodityName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Country.CountryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Country.CountryName)
+        </dd>
+
+        <dt>
+            Consignee Name @*@Html.DisplayNameFor(model => model.Customer.CustomerName)*@
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer.CustomerName)
+        </dd>
+
+        <dt>
+            Shipper Name @*@Html.DisplayNameFor(model => model.Customer1.CustomerName)*@
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer1.CustomerName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SalesMan.SalesManName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SalesMan.SalesManName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShippingTerm.ShippingTermName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShippingTerm.ShippingTermName)
+        </dd>
+
+        @*<dt>
+                @Html.DisplayNameFor(model => model.ShippingType.ShippingTypeName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ShippingType.ShippingTypeName)
+            </dd>*@
+
+
+    </dl>
+</div>
+<p>
+    @if (@*Model.TranDetail.StatusID != 4 ||*@ User.IsInRole("administrators"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.TranID }, new { @class = "btn btn-danger" })
+    }
+
+    @Html.ActionLink("Back to list", "Index", null, new { @class = "btn btn-primary" })
+
+</p>
+<div id="tabs" class="panel panel-default">
+    <div class="panel-heading">Transaction Details</div>
+    <div class="panel-body" role="tabpanel" data-example-id="togglable-tabs">
+        <ul id="myTab" class="nav nav-tabs" role="tablist">
+            @if (!User.IsInRole("customerservice"))
+            {
+                <li role="presentation" class="active">
+                    <a href="#TranContainer" id="TranContainer-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false">Containers</a>
+                </li>
+            }
+
+            <li role="presentation">
+                <a href="#TranDetail" id="TranDetail-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false">Tran Info</a>
+            </li>
+            @{if ((User.IsInRole("administrators") || User.IsInRole("accounting")) || @Model.TranDetail.StatusID != 4)
+            {
+                if (User.IsInRole("operation") || User.IsInRole("accounting") || User.IsInRole("administrators"))
+                {
+                    <li role="presentation">
+                        <a href="#FeesInOriginNet" id="FeesInOriginNet-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false">Origin Net</a>
+                    </li>
+                }
+                if (User.IsInRole("sales") || User.IsInRole("operation") || User.IsInRole("accounting") || User.IsInRole("administrators"))
+                {
+                    <li role="presentation">
+                        <a href="#FeesInOriginSelling" id="FeesInOriginSelling-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false">Origin Selling</a>
+                    </li>
+                }
+                if (User.IsInRole("operation") || User.IsInRole("accounting") || User.IsInRole("administrators") || User.IsInRole("customclearance"))
+                {
+                    <li role="presentation">
+                        <a href="#FeesInDischargePortNet" id="FeesInDischargePortNet-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false">Discharge Port Net</a>
+                    </li>
+                }
+                if (User.IsInRole("sales") || User.IsInRole("operation") || User.IsInRole("accounting") || User.IsInRole("administrators") || User.IsInRole("customclearance"))
+                {
+                    <li role="presentation">
+                        <a href="#FeesInDischargePortSelling" id="FeesInDischargePortSelling-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false">Discharge Port Selling</a>
+                    </li>
+                }
+                if (User.IsInRole("operation") || User.IsInRole("accounting") || User.IsInRole("administrators") || User.IsInRole("customclearance"))
+                {
+                    <li role="presentation">
+                        <a href="#TranCharges" id="TranCharges-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false">Charges</a>
+                    </li>
+                }
+                if (User.IsInRole("sales") || User.IsInRole("operation") || User.IsInRole("accounting") || User.IsInRole("administrators") || User.IsInRole("customclearance"))
+                {
+                    <li role="presentation">
+                        <a href="#TranTotals" id="TranTotals-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false">Totals</a>
+                    </li>
+                }
+
+                if (User.IsInRole("accounting") || User.IsInRole("administrators"))
+                {
+                    <li role="presentation">
+                        <a href="#TranProfit" id="TranProfit-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="false">Profitability</a>
+                    </li>
+                }
+            }}
+        </ul>
+
+        <div id="myTabContent" class="nav tab-content">
+
+            @if (!User.IsInRole("customerservice"))
+            {
+                <div role="tabpanel" class="tab-pane fade active in" id="TranContainer" aria-labelledby="TranContainer-tab">
+                    @*@Html.Action("Details", "TranContainer", new { id = Model.TranID })*@
+                    @Html.Partial("~/Views/TranContainer/Details.cshtml", (List<FFSolution.Models.TranContainer>)ViewBag.TCs)
+                </div>
+            }
+
+            <div role="tabpanel" class="tab-pane fade" id="TranDetail" aria-labelledby="TranDetail-tab">
+                @Html.Partial("~/Views/TranDetail/Details.cshtml", Model.TranDetail)
+            </div>
+
+
+            @{if (User.IsInRole("operation") || User.IsInRole("accounting") || User.IsInRole("administrators"))
+            {
+                <div role="tabpanel" class="tab-pane fade" id="FeesInOriginNet" aria-labelledby="FeesInOriginNet-tab">
+                    @Html.Partial("~/Views/FeesInOriginNet/Details.cshtml", Model.FeesInOriginNet)
+                </div>
+            }}
+            @{if (User.IsInRole("sales") || User.IsInRole("operation") || User.IsInRole("accounting") || User.IsInRole("administrators"))
+            {
+                <div role="tabpanel" class="tab-pane fade" id="FeesInOriginSelling" aria-labelledby="FeesInOriginSelling-tab">
+                    @Html.Partial("~/Views/FeesInOriginSelling/Details.cshtml", Model.FeesInOriginSelling)
+                </div>
+            }}
+            @{if (User.IsInRole("operation") || User.IsInRole("accounting") || User.IsInRole("administrators") || User.IsInRole("customclearance"))
+            {
+                <div role="tabpanel" class="tab-pane fade " id="FeesInDischargePortNet" aria-labelledby="FeesInDischargePortNet-tab">
+                    @Html.Partial("~/Views/FeesInDischargePortNet/Details.cshtml", Model.FeesInDischargePortNet)
+                </div>
+            }}
+            @{if (User.IsInRole("sales") || User.IsInRole("operation") || User.IsInRole("accounting") || User.IsInRole("administrators") || User.IsInRole("customclearance"))
+            {
+                <div role="tabpanel" class="tab-pane fade" id="FeesInDischargePortSelling" aria-labelledby="FeesInDischargePortSelling-tab">
+                    @Html.Partial("~/Views/FeesInDischargePortSelling/Details.cshtml", Model.FeesInDischargePortSelling)
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="TranCharges" aria-labelledby="TranCharges-tab">
+                    @Html.Partial("~/Views/TranCharges/Details.cshtml", Model.TranCharges)
+                </div>
+
+                <div role="tabpanel" class="tab-pane fade" id="TranTotals" aria-labelledby="TranTotals-tab">
+                    @Html.Partial("~/Views/TranTotals/Details.cshtml", Model.TranTotals.ToList())
+                </div>
+            }}
+            @{if (User.IsInRole("accounting") || User.IsInRole("administrators"))
+            {
+                <div role="tabpanel" class="tab-pane fade" id="TranProfit" aria-labelledby="TranProfit-tab">
+                    @Html.Partial("~/Views/Profit/TranProfitDetails.cshtml", new FFSolution.Models.ProfitViewModel(Model.TranID))
+                </div>
+            }
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+﻿@model FFSolution.Models.TranCharges
+
+
+<br />
+<div>
+    <dl class="dl-horizontal">
+        
+
+@{if (User.IsInRole("accounting") || User.IsInRole("administrators") || User.IsInRole("customclearance"))
+{
+       
+        <dt>
+            @Html.DisplayNameFor(model => model.CommissionPercentage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CommissionPercentage)
+            @Html.DisplayFor(model => model.Currency2.CurrencyCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaidCommission)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaidCommission)
+            @Html.DisplayFor(model => model.Currency4.CurrencyCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BankPercentage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BankPercentage)
+            @Html.DisplayFor(model => model.Currency.CurrencyCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BankTransferFees)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BankTransferFees)
+            @Html.DisplayFor(model => model.Currency1.CurrencyCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OtherFees)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OtherFees)
+            @Html.DisplayFor(model => model.Currency3.CurrencyCode)
+        </dd>
+
+}}
+    </dl>
+</div>
+@if (Model.Tran.TranDetail.StatusID != 4 || User.IsInRole("administrators")) {
+<p>
+    <a href="/TranCharges/Edit/@Model.TranID" class="btn btn-danger" >Edit</a>
+</p>
+}

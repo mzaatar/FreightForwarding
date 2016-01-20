@@ -1,0 +1,121 @@
+﻿@model FFSolution.Models.ProfitForCustomerViewModel
+
+@{
+    ViewBag.Title = "Customer Profitability";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    #wrap {
+        width: 600px;
+        margin: 0 auto;
+    }
+
+    #left_col {
+        float: left;
+        width: 300px;
+    }
+
+    #right_col {
+        float: right;
+        width: 300px;
+    }
+</style>
+
+<br />
+<h2>Cusomer Profitability</h2>
+
+
+
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default" id="panel1">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-target="#collapseOne"
+                   href="#collapseOne">
+                    <strong style="color:blue"> Total Profitability for Customer named : @Model.Customer.CustomerName </strong>
+                </a>
+            </h4>
+
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <td>
+                                <strong>Currency Code</strong>
+                            </td>
+                            <td>
+                                <strong style="color:green">Total Earned</strong>
+                            </td>
+
+                            <td>
+                                <strong style="color:red">Total Paid</strong>
+                            </td>
+
+                            <td>
+                                <strong>Profit</strong>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            foreach (var p in Model.TranList.ProfitGrouping)
+                            {
+                                <tr>
+                                    <td>
+                                        @p.Currency.CurrencyCode
+                                    </td>
+                                    <td style="color:green">
+                                        @p.TotalEarned
+                                    </td>
+                                    <td style="color:red">
+                                        @p.TotalPaid
+                                    </td>
+                                    @{if (@p.Profit >= 0)
+                                    {
+                                        <td style="color:green">
+                                            @p.Profit
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td style="color:red">
+                                            @p.Profit
+                                        </td>
+                                    }
+                                    }
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+<div class="panel-group" id="accordion">
+    @{foreach (var t in Model.TranList.ProfitsVM)
+    {
+        <div class="panel panel-default" id="panel'@t.TranId'">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <strong>Profitability for Tran with BLNo : @t.BLNo </strong>
+                </h4>
+
+            </div>
+            <div class="panel-collapse collapse in">
+                <div class="panel-body">
+                    @Html.Partial("~/Views/Profit/TranProfitDetails.cshtml", t)
+                </div>
+            </div>
+        </div>
+        <br />
+    }
+    }
+</div>

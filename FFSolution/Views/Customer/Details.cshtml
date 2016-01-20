@@ -1,0 +1,160 @@
+﻿@model FFSolution.Models.Customer
+
+@{
+    ViewBag.Title = "Details Customer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnProfit').click(function (e) {
+          location.href = '@Url.Content("~/Profit/CustomerProfitDetails/"+@Model.CustomerID)';
+        });
+
+        if(AppGlobal['isAdmin'] || AppGlobal['isAccounting'])
+        {
+            $('#btnProfit').show();
+        }
+        else
+            $('#btnProfit').hide();
+    });
+</script>
+
+<h2>Details</h2>
+
+<button id="btnProfit" class="btn btn-danger pull-right" hidden >Customer Profitability</button>
+
+<div>
+    <h4>Customer</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Updated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Updator)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updator)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CustomerID }, new { @class = "btn btn-danger" }) |
+    @Html.ActionLink("Back to list", "Index", null, new { @class = "btn btn-primary" })
+</p>
+
+
+@* zaatar added *@
+<br />
+<h2>
+    Transactions for Customer : @Html.DisplayFor(model => model.CustomerName) 
+    </h2>
+    <br />
+    <table id="MyTable" class="display" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    Transaction Referecne Number
+                </th>
+                <th>
+                    Booking Date
+                </th>
+                <th>
+                    BL NO
+                </th>
+                <th>
+                    POL
+                </th>
+                <th>
+                    POD
+                </th>
+                <th>
+                    ETD
+                </th>
+                <th>
+                    ETA
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Tran)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TranRefNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BookingDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BLNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.POL)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.POD)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ETD)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ETA)
+                    </td>
+                    <td>
+                        <a href="/Tran/Edit/@item.TranID">Edit</a>  |
+                        <a href="/Tran/Details/@item.TranID">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

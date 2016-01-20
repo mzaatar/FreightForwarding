@@ -1,0 +1,84 @@
+﻿@model IEnumerable<FFSolution.Models.AspNetUsers>
+
+@{
+    ViewBag.Title = "User List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>*@
+<table id="MyTable" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Discriminator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CanLogin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAdministrator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAccounting)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsOperation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSales)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCustomerService)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCustomClearance)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Discriminator)
+                </td>
+                <td>
+                    @Html.CheckBoxFor(modelItem => item.CanLogin, new { @disabled = "disabled" })
+                </td>
+                <td>
+                    @Html.CheckBoxFor(modelItem => item.IsAdministrator, new { @disabled = "disabled" })
+                </td>
+                <td>
+                    @Html.CheckBoxFor(modelItem => item.IsAccounting, new { @disabled = "disabled" })
+                </td>
+                <td>
+                    @Html.CheckBoxFor(modelItem => item.IsOperation, new { @disabled = "disabled" })
+                </td>
+                <td>
+                    @Html.CheckBoxFor(modelItem => item.IsSales, new { @disabled = "disabled" })
+                </td>
+                <td>
+                    @Html.CheckBoxFor(modelItem => item.IsCustomerService, new { @disabled = "disabled" })
+                </td>
+                <td>
+                    @Html.CheckBoxFor(modelItem => item.IsCustomClearance, new { @disabled = "disabled" })
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

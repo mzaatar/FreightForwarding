@@ -1,0 +1,60 @@
+﻿@model IEnumerable<FFSolution.Models.ShippingType>
+
+@{
+    ViewBag.Title = "Shipping Type List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+<table id="MyTable" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Updated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Updator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShippingTypeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShippingMode.ShippingModeName)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Updated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Updator)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShippingTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShippingMode.ShippingModeName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ShippingTypeID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ShippingTypeID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

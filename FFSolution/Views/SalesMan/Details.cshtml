@@ -1,0 +1,72 @@
+﻿@model FFSolution.Models.SalesMan
+
+@{
+    ViewBag.Title = "Sales Man Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Sales Man</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.SalesManID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SalesManID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Updated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Updator)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updator)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SalesManName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SalesManName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SalesManPhone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SalesManPhone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.SalesManID }, new { @class = "btn btn-danger" }) 
+    @{
+        if (!HttpContext.Current.User.IsInRole("sales"))
+        { 
+            Html.ActionLink("Back to List", "Index");
+        }
+    }
+</p>

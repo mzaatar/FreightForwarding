@@ -1,0 +1,94 @@
+﻿@model List<FFSolution.Models.TranContainer>
+
+
+<script>
+    $(document).ready(function () {
+        $('#AddNewContainer').click(function (e) {
+            var tranID = AppGlobal['activeTranID'];
+            location.href = '@Url.Content("~/TranContainer/CreateByTranID/")' + tranID;
+        });
+
+        if (AppGlobal["activeTranStatusID"] != 4 || AppGlobal["isAdmin"] == true) {
+            console.warn('AppGlobal["activeTranStatusID"]' + AppGlobal["activeTranStatusID"]);
+            console.warn('AppGlobal["isAdmin"]' + AppGlobal["isAdmin"]);
+
+            $('#divToHide').show();
+            $('#AddNewContainer').show();
+        }
+        else            
+        {
+            $('#divToHide').hide();
+            $('#AddNewContainer').hide();
+        }
+    });
+</script>
+<br />
+
+<hr />
+<table id="MyTable" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                Shipping Type Name
+            </th>
+            <th>
+                Count
+            </th>
+
+            <th>
+                Line Shipping Charge (Unit)
+            </th>
+            <th>
+                Total
+            </th>
+
+            <th style="color:red;">
+                Line Shipping Charge Selling (Unit)
+            </th>
+
+            <th style="color:red;">
+                Total Selling
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShippingType.ShippingTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Count)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LineShippingCharge)
+                    @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LineShippingChargeTotal)
+                    @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                </td>
+                <td style="color:red;">
+                    @Html.DisplayFor(modelItem => item.LineShippingChargeSelling)
+                    @Html.DisplayFor(modelItem => item.Currency1.CurrencyCode)
+                </td>
+                <td style="color:red;">
+                    @Html.DisplayFor(modelItem => item.LineShippingChargeSellingTotal)
+                    @Html.DisplayFor(modelItem => item.Currency1.CurrencyCode)
+                </td>
+                <td>
+                    <div id="divToHide">
+                        @Html.ActionLink("Edit", "Edit", "TranContainer", new { id = item.TranContainerID }, null) |
+                        @Html.ActionLink("Delete", "Delete", "TranContainer", new { id = item.TranContainerID }, null)
+                    </div>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<button class="btn btn-danger" id="AddNewContainer">Add Container</button>

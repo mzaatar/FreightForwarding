@@ -1,0 +1,123 @@
+﻿@model List<FFSolution.Models.TranTotals>
+
+<br />
+<table id="MyTable2" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                Financial Details
+            </th>
+            <th>
+                Financial Total with Currency
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (item.FinType == "FeesInDischargePortNet" &&
+                (User.IsInRole("operation") || User.IsInRole("accounting") || User.IsInRole("administrators") || User.IsInRole("customclearance")))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinTotal)
+                        @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                    </td>
+                </tr>
+            }
+            else if (item.FinType == "FeesInDischargePortSelling" &&
+            (User.IsInRole("sales") || User.IsInRole("operation") || User.IsInRole("accounting") || User.IsInRole("administrators") || User.IsInRole("customclearance") || User.IsInRole("customerservice")))
+            {
+
+                <tr style="color:red">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinTotal)
+                        @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                    </td>
+                </tr>
+            }
+            else if (item.FinType == "FeesInOriginNet" && ( User.IsInRole("operation") || User.IsInRole("accounting") || User.IsInRole("administrators")))
+            {
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinTotal)
+                        @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                    </td>
+                </tr>
+            }
+
+            else if (item.FinType == "FeesInOriginSelling" && (User.IsInRole("sales") || User.IsInRole("operation") || User.IsInRole("accounting") || User.IsInRole("administrators") || User.IsInRole("customerservice")))
+            {
+                <tr style="color:red">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinTotal)
+                        @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                    </td>
+                </tr>
+            }
+            else if (item.FinType == "TranChargesNet")
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinTotal)
+                        @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                    </td>
+                </tr>
+            }
+            @*else if (item.FinType == "TranChargesSelling")
+            {
+                <tr style="color:red">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinTotal)
+                        @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                    </td>
+                </tr>
+            }*@
+            // Containers
+            else if ((item.FinType == "LineShippingNet") && 
+            (User.IsInRole("sales") || User.IsInRole("operation") || User.IsInRole("accounting") || User.IsInRole("administrators")))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinTotal)
+                        @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                    </td>
+                </tr>
+            }
+            else if (item.FinType == "LineShippingSelling")
+            {
+                <tr style="color:red">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinTotal)
+                        @Html.DisplayFor(modelItem => item.Currency.CurrencyCode)
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

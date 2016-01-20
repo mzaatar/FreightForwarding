@@ -1,0 +1,166 @@
+﻿@model FFSolution.Models.FeesInDischargePortSelling
+
+@{
+    ViewBag.Title = "Edit Fees In Discharge Port Selling";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Fees In Discharge Port Selling</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.TranID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustomsPersonName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CustomsPersonName)
+                @Html.ValidationMessageFor(model => model.CustomsPersonName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.THC, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.THC)
+                @Html.ValidationMessageFor(model => model.THC)
+            
+                @Html.DropDownList("THCCurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.THCCurrencyID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Truck, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Truck)
+                @Html.ValidationMessageFor(model => model.Truck)
+          
+                @Html.DropDownList("TruckCurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.TruckCurrencyID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Pacing, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Pacing)
+                @Html.ValidationMessageFor(model => model.Pacing)
+           
+                @Html.DropDownList("PacingCurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.PacingCurrencyID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.License, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.License)
+                @Html.ValidationMessageFor(model => model.License)
+           
+                @Html.DropDownList("LicenseCurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.LicenseCurrencyID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Recept, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Recept)
+                @Html.ValidationMessageFor(model => model.Recept)
+          
+                @Html.DropDownList("ReceptCurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.ReceptCurrencyID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Customs, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Customs)
+                @Html.ValidationMessageFor(model => model.Customs)
+            
+                @Html.DropDownList("CustomsCurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.CustomsCurrencyID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Clearance, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Clearance)
+                @Html.ValidationMessageFor(model => model.Clearance)
+           
+                @Html.DropDownList("ClearanceCurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.ClearanceCurrencyID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OtherCustomsFees, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.OtherCustomsFees)
+                @Html.ValidationMessageFor(model => model.OtherCustomsFees)
+            
+                @Html.DropDownList("OtherCustomsFeesCurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.OtherCustomsFeesCurrencyID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Others, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Others)
+                @Html.ValidationMessageFor(model => model.Others)
+           
+                @Html.DropDownList("OthersCurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.OthersCurrencyID)
+            </div>
+        </div>
+
+        @* additional Fields *@
+        <div class="form-group">
+            <label class="control-label col-md-2" for="AdditionalField1">@Model.Tran.TranDetail.AdditionalField1Label</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AdditionalField1)
+                @Html.ValidationMessageFor(model => model.AdditionalField1)
+
+                @Html.DropDownList("AdditionalField1CurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.AdditionalField1CurrencyID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="AdditionalField2">@Model.Tran.TranDetail.AdditionalField2Label</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.AdditionalField2)
+                @Html.ValidationMessageFor(model => model.AdditionalField2)
+
+                @Html.DropDownList("AdditionalField2CurrencyID", String.Empty)
+                @Html.ValidationMessageFor(model => model.AdditionalField2CurrencyID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-danger" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+@Html.ActionLink("Back to Transaction", "Details", "Tran", new { id = Model.TranID }, null)
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

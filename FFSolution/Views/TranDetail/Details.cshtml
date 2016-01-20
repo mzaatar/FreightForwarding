@@ -1,0 +1,91 @@
+﻿@model FFSolution.Models.TranDetail
+<br />
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DemurrageFreeDays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DemurrageFreeDays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DemurrageOverDays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DemurrageOverDays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DemurrageCost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DemurrageCost)
+            @Html.DisplayFor(model => model.DemurrageCostCurrencyID)
+        </dd>
+@if (User.IsInRole("administrators") || User.IsInRole("accounting") || User.IsInRole("customerservice"))
+{
+        <dt>
+            @Html.DisplayNameFor(model => model.CollectDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CollectDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentFinished)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentFinished)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RemainingAmountNotes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RemainingAmountNotes)
+        </dd>
+}
+@if(User.IsInRole("administrators"))
+{ 
+        <dt>
+            @Html.DisplayNameFor(model => model.AdditionalField1Label)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AdditionalField1Label)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AdditionalField2Label)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AdditionalField2Label)
+        </dd>
+            
+        <dt>
+            @Html.DisplayNameFor(model => model.StatusID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TranStatus.StatusName)
+        </dd>
+            
+}
+    </dl>
+</div>
+
+@if (Model.Tran.TranDetail.StatusID != 4 || User.IsInRole("administrators")) {
+<p>
+    <a href="/TranDetail/Edit/@Model.TranID" class="btn btn-danger">Edit</a>
+  
+</p>
+}

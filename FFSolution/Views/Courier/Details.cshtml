@@ -1,0 +1,91 @@
+﻿@model FFSolution.Models.Courier
+
+@{
+    ViewBag.Title = "Courier Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Courier</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Updated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Updator)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updator)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CourierName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CourierName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CourierDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CourierDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CourierAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CourierAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CourierTelephone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CourierTelephone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountNumberUSD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AccountNumberUSD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountNumberEUR)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AccountNumberEUR)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountNumberEGP)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AccountNumberEGP)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CourierID }, new { @class = "btn btn-danger" }) |
+    @Html.ActionLink("Back to list", "Index", null, new { @class = "btn btn-primary" })
+</p>
