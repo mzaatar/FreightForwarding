@@ -1,15 +1,14 @@
 # Freight Forwarding
 
-Freight Forwarding System
-Here is the new Web-based Logistics CRM
+Freight Forwarding System is a new intranet-based logistics CMS
 
 The applciation can handle the following:
 * System User and groups
-* Translaction and calculate profit per currency
-* Conatiner with different types
+* Transactions and calculate profit per currency
+* Container with different types
 * Sales and their revenue / profitability
 * Notification system / Work flow for the orders
-* Handle many types of shippment (air / sea / land)
+* Handle many types of shipment (air / sea / land)
 And much more !
 
 To start with just restore the DB on SQL Server 2012 or higher and host the app using IIS 7+
